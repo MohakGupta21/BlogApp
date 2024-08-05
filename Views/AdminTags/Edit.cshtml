@@ -1,0 +1,57 @@
+@model BlogApp.Models.ViewModels.EditTagRequest
+
+<div class="bg-dark bg-opacity-10 py-2">
+    <div class="container">
+        <h1 class="fw-light">Edit Tag - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+@if(Model!=null){
+
+    <form method="post">
+        <div class="mb-3">
+            <label for="id" class="form-label">Id</label>
+            <input type="text" class="form-control" id="id" asp-for="@Model.Id" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" asp-for="@Model.Name">
+        </div>
+
+        <div class="mb-3">
+            <label for="displayName" class="form-label">Display Name</label>
+            <input type="text" class="form-control" id="displayName" asp-for="@Model.DisplayName">
+        </div>
+        <div class="mb-3">
+            <div class="d-flex justify-content-around">
+                <button type="submit" class="btn btn-dark">Update</button>
+                <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Delete</button>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Tag?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-danger" asp-area="" asp-controller="AdminTags" asp-action="Delete">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+else{
+    <p>Tag not found!</p>
+}
+</div>
+

@@ -1,0 +1,35 @@
+@model BlogApp.Models.ViewModels.LoginViewModel
+
+<div class="container mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="py-2 bg-success text-white text-center">
+                <h4 class="fw-light">Login</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group mb-3">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter username"
+                            asp-for="@Model.Username">
+                        <span class="text-danger" asp-validation-for="@Model.Username"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter password"
+                            asp-for="@Model.Password">
+                        <span class="text-danger" asp-validation-for="@Model.Password"></span>
+                        
+                    </div>
+                    <div class="">
+                        <button type="submit" id="check" class="btn btn-success btn-block">Login</button>
+                    </div>
+                    <input type="hidden" asp-for="@Model.ReturnUrl">
+                    <span class="text-danger" asp-validation-for="@Model.Password"></span>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>

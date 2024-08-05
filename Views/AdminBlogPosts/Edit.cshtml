@@ -1,0 +1,133 @@
+@model BlogApp.Models.ViewModels.EditBlogPostRequest
+
+<div class="bg-dark bg-opacity-10 py-2">
+    <div class="container">
+        <h1 class="fw-light">Edit BlogPost - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null)
+    {
+        <form method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Id</label>
+                <input type="text" class="form-control" id="name" asp-for=@Model.Id readonly>
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Heading</label>
+                <input type="text" class="form-control" id="name" asp-for=@Model.Heading>
+            </div>
+            <div class="mb-3">
+                <label for="pageTitle" class="form-label">Page Title</label>
+                <input type="text" class="form-control" id="pageTitle" asp-for=@Model.PageTitle>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea rows="4" class="form-control" id="content" asp-for=@Model.Content></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="shortDesc" class="form-label">Short Description</label>
+                <input type="text" class="form-control" id="shortDesc" asp-for=@Model.ShortDescription>
+            </div>
+            <div class="mb-3">
+                <label for="imageUpload" class="form-label">Featured Image Upload</label>
+                <input type="file" id="imageUpload" class="form-control" />
+                @if(Model.FeaturedImageUrl!=null)
+                {
+                <img src="@Model.FeaturedImageUrl" alt="" id="featuredImageDisplay" style="display:block; width:300px;" />
+                }
+                else{
+                <img src="" alt="" id="featuredImageDisplay" style="display:none; width:300px;" />
+                }
+            </div>
+            <div class="mb-3">
+                <label for="featuredImageUrl" class="form-label">Featured Image Url</label>
+                <input type="text" class="form-control" id="featuredImageUrl" asp-for=@Model.FeaturedImageUrl>
+            </div>
+            <div class="mb-3">
+                <label for="urlhandle" class="form-label">Url Handle</label>
+                <input type="text" class="form-control" id="urlhandle" asp-for=@Model.UrlHandle>
+            </div>
+            <div class="mb-3">
+                <label for="publishedDate" class="form-label">Published Date</label>
+                <input type="date" class="form-control" id="publishedDate" asp-for=@Model.PublishedDate>
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">Author</label>
+                <input type="text" class="form-control" id="author" asp-for=@Model.Author>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="visible" asp-for=@Model.Visible>
+                <label class="form-check-label" for="visible">
+                    Is Visible?
+                </label>
+            </div>
+
+            <div class="mb-3">
+                <label for="tags" class="form-label">Tags</label>
+                <select class="form-select" asp-items="@Model.Tags" asp-for="@Model.SelectedTags"></select>
+            </div>
+
+            <div class="d-flex justify-content-around mb-3">
+                <button type="submit" class="btn btn-dark">Update</button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Delete</button>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Tag?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="submit" class="btn btn-danger" asp-area="" asp-controller="AdminBlogPosts"
+                                asp-action="Delete">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>No Blog posts to show</p>
+    }
+</div>
+@section Scripts {
+    <script>
+        var editor = new FroalaEditor('#content',{
+            imageUploadURL:'/api/images'
+        });
+
+        const featuredUploadElement = document.getElementById('imageUpload');
+        const imageUrl = document.getElementById('featuredImageUrl');
+        const imageDisplay = document.getElementById('featuredImageDisplay');
+
+        featuredUploadElement.addEventListener('change', async (e) => {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*'
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                     console.log(result);
+                     imageUrl.value = result?.link;
+                     imageDisplay.src = result?.link;
+                     imageDisplay.style.display = "block";
+                     });
+        });
+    </script>
+}

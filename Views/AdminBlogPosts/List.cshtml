@@ -1,0 +1,47 @@
+@model List<BlogApp.Models.Domain.BlogPost>
+
+<div class="bg-dark bg-opacity-10 py-2">
+    <div class="container">
+        <h1 class="fw-light">All BlogPosts - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if(Model!=null && Model.Any())
+    {
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Heading</th>
+                <th>Tags</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var blogPost in Model)
+            {
+                <tr>
+                    <td>@blogPost.Id</td>
+                    <td>@blogPost.Heading</td>
+                    <td>
+                        <div class="d-flex">
+                            @foreach(var tag in blogPost.Tags)
+                            {
+                                <span class="badge bg-secondary ms-1">@tag.DisplayName</span> 
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="AdminBlogPosts" asp-action="Edit" asp-route-id="@blogPost.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    else
+    {
+        <h3 class="fw-light">No Blogs Found</h3>
+    }
+</div>

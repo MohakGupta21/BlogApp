@@ -1,0 +1,62 @@
+﻿@model BlogApp.Models.ViewModels.HomeViewModel
+@{
+    ViewData["Title"]="List of Blogs";
+}
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 py-5">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-6 fw-bold lh-1 mb-3">
+                BlogApp - The Dev Blog
+            </h1>
+            <p class="lead">
+                BlogApp is the home to coding blogs covering a vast range of topics like HTML, CSS, Javascript, ASP.NET, C#, Angular etc.
+                Want to read the latest dev articles? Join the BlogApp and get weekly blogs in your email.
+            </p>
+        </div>
+        <div class="col-12 col-lg-6">
+            <img src="https://images.pexels.com/photos/57690/pexels-photo-57690.jpeg?auto=compress&cs=tinysrgb&w=600" alt="BlogApp Image" class="d-block mx-lg-auto img-fluid" width="300">
+        </div>
+    </div> 
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex mb-3 pb-4">
+            @if(Model!=null && Model.Tags.Any())
+            {
+                foreach(var tag in Model.Tags)
+                {
+                    <span class="badge bg-dark me-1">@tag.Name</span> 
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            @if(Model!=null && Model.BlogPosts.Any())
+            {
+                foreach(var blog in Model.BlogPosts)
+                {
+                    <div class="mb-5 bg-light box-shadow p-4">
+                        <img src="@blog.FeaturedImageUrl" alt="@blog.Heading" class="mb-2 d-block img-fluid"/>
+                        <h2 class="mb-4 fw-light">@blog.Heading</h2>
+                        <p class="mb-4">
+                            Author: @blog.Author<br/>
+                            Published Date: @blog.PublishedDate.ToShortDateString()
+                        </p>
+                        <p class="mb-4">
+                            @foreach(var tag in blog.Tags)
+                            {
+                                <span class="badge bg-secondary ms-1">@tag.DisplayName</span> 
+                            }
+                        </p>
+                        <div class="mb-4">@blog.ShortDescription</div>
+                        <a class="btn btn-dark" asp-controller="Blogs" asp-action="Index" asp-route-urlHandle="@blog.UrlHandle">Read More</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

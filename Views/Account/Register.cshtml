@@ -1,0 +1,91 @@
+@model BlogApp.Models.ViewModels.RegisterViewModel
+
+<div class="container mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="py-2 bg-success text-white text-center">
+                <h4>Registration Form</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group mb-3">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter username"
+                            asp-for="@Model.Username" required>
+                        <span class="text-danger" asp-validation-for="@Model.Username"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email"
+                            asp-for="@Model.Email" required>
+                        <span class="text-danger" asp-validation-for="@Model.Email"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter password"
+                            asp-for="@Model.Password" required>
+                        <span class="text-danger" asp-validation-for="@Model.Password"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm-password" placeholder="Confirm password"
+                            asp-for="@Model.ConfirmPassword">
+                        <span class="text-danger" asp-validation-for="@Model.ConfirmPassword"></span>
+                    </div>
+                    <p id="error" class="hide text-danger my-1 p-0">
+                        Passwords do not match
+                    </p>
+                    <div class="">
+                        <button type="submit" id="check" class="btn btn-success btn-block">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="footer text-center">
+                <small class="text-muted">Already have an account? <a asp-area="" asp-action="Login"
+                        asp-controller="Account">Login here</a></small>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        const check = document.getElementById('check');
+
+        function validatePassword(password) {
+            const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*(.)\1).{6,}$/;
+            return passwordPattern.test(password);
+        }
+
+        check.addEventListener('click', async (e) => {
+
+            const cpass = document.getElementById('confirm-password').value;
+            const pass = document.getElementById('password').value;
+
+            console.log("pass 1", pass);
+            console.log("pass 2", cpass);
+            if (pass == "" || cpass == "") {
+                alert("Passwords cannot be empty!");
+                e.preventDefault();
+            }
+
+            else if (pass != cpass) {
+                document.getElementById('error').classList.remove('hide');
+
+                setTimeout(() => document.getElementById('error').classList.add('hide'), 2000);
+                e.preventDefault();
+            }
+
+            else if(!validatePassword(pass))
+            {
+                alert("Invalid Password!");
+                 e.preventDefault();
+            }
+
+        });
+    </script>
+}

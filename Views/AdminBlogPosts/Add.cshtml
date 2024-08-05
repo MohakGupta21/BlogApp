@@ -1,0 +1,96 @@
+@model BlogApp.Models.ViewModels.AddBlogPostRequest
+
+<div class="bg-dark bg-opacity-10 py-2">
+    <div class="container">
+        <h1 class="fw-light">Add New BlogPost - Admin Functionality</h1>
+    </div>
+</div>
+<div class="container py-5">
+    <form method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Heading</label>
+            <input type="text" class="form-control" id="name" asp-for=@Model.Heading>
+        </div>
+        <div class="mb-3">
+            <label for="pageTitle" class="form-label">Page Title</label>
+            <input type="text" class="form-control" id="pageTitle" asp-for=@Model.PageTitle>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" id="content" asp-for=@Model.Content></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="shortDesc" class="form-label">Short Description</label>
+            <input type="text" class="form-control" id="shortDesc" asp-for=@Model.ShortDescription>
+        </div>
+        <div class="mb-3">
+            <label for="imageUpload" class="form-label">Featured Image Upload</label>
+            <input type="file" id="imageUpload" class="form-control" />
+            <img src="" alt="" id="featuredImageDisplay" style="display:none; width:300px;"/>
+        </div>
+        <div class="mb-3">
+            <label for="featuredImageUrl" class="form-label">Featured Image Url</label>
+            <input type="text" class="form-control" id="featuredImageUrl" asp-for=@Model.FeaturedImageUrl readonly>
+        </div>
+        <div class="mb-3">
+            <label for="urlhandle" class="form-label">Url Handle</label>
+            <input type="text" class="form-control" id="urlhandle" asp-for=@Model.UrlHandle>
+        </div>
+        <div class="mb-3">
+            <label for="publishedDate" class="form-label">Published Date</label>
+            <input type="date" class="form-control" id="publishedDate" asp-for=@Model.PublishedDate>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" asp-for=@Model.Author>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="visible" asp-for=@Model.Visible>
+            <label class="form-check-label" for="visible">
+                Is Visible?
+            </label>
+        </div>
+
+        <div class="mb-3">
+            <label for="tags" class="form-label">Author</label>
+            <select class="form-select" asp-items="@Model.Tags" asp-for="@Model.SelectedTags"></select>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-dark">Save</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        var editor = new FroalaEditor('#content',{
+            imageUploadURL:'/api/images'
+        });
+
+        const featuredUploadElement = document.getElementById('imageUpload');
+        const imageUrl = document.getElementById('featuredImageUrl');
+        const imageDisplay = document.getElementById('featuredImageDisplay');
+
+        featuredUploadElement.addEventListener('change', async (e) => {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*'
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                     console.log(result);
+                     imageUrl.value = result?.link;
+                     imageDisplay.src = result?.link;
+                     imageDisplay.style.display = "block";
+                     });
+        });
+    </script>
+}
