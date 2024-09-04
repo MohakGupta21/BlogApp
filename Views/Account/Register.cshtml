@@ -23,14 +23,14 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter password"
+                        <input type="password" minlength="6" class="form-control" id="password" placeholder="Enter password"
                             asp-for="@Model.Password" required>
                         <span class="text-danger" asp-validation-for="@Model.Password"></span>
 
                     </div>
                     <div class="form-group mb-3">
                         <label for="confirm-password">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm-password" placeholder="Confirm password"
+                        <input type="password" minlength="6" class="form-control" id="confirm-password" placeholder="Confirm password"
                             asp-for="@Model.ConfirmPassword">
                         <span class="text-danger" asp-validation-for="@Model.ConfirmPassword"></span>
                     </div>
@@ -56,10 +56,11 @@
     <script>
         const check = document.getElementById('check');
 
-        function validatePassword(password) {
+        @* function validatePassword(password) {
             const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*(.)\1).{6,}$/;
+            console.log(passwordPattern.test(password));
             return passwordPattern.test(password);
-        }
+        } *@
 
         check.addEventListener('click', async (e) => {
 
@@ -80,11 +81,6 @@
                 e.preventDefault();
             }
 
-            else if(!validatePassword(pass))
-            {
-                alert("Invalid Password!");
-                 e.preventDefault();
-            }
 
         });
     </script>

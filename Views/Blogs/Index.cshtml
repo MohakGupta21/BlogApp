@@ -57,7 +57,7 @@
                                     <span class="text-light ms-2">@comment.Username</span>
                                     <div class="text-light me-2 d-flex">
                                         <div>@comment.Date.ToShortDateString()</div>
-                                        @if (comment.Username == UserManager.GetUserName(User))
+                                        @if (comment.Username == UserManager.GetUserName(User) || (SignInManager.IsSignedIn(User) && User.IsInRole("Admin")))
                                         {
                                             <div class="dropdown">
                                                 <a class="text-light" role="button" data-bs-toggle="dropdown"

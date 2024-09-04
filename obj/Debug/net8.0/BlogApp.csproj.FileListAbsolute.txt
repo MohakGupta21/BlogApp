@@ -146,3 +146,4 @@
 /Users/bhavikagupta/Desktop/asp.net-core/BlogApp/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.dll
 /Users/bhavikagupta/Desktop/asp.net-core/BlogApp/bin/Debug/net8.0/Microsoft.Extensions.Identity.Stores.dll
 /Users/bhavikagupta/Desktop/asp.net-core/BlogApp/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/Users/bhavikagupta/Desktop/asp.net-core/BlogApp/obj/Debug/net8.0/BlogApp.sourcelink.json

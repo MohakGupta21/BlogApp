@@ -10,7 +10,7 @@ namespace BlogApp.Repositories
 
         Task<IEnumerable<BlogPostComment>> DeleteCommentsByUserAsync(Guid userId);
 
-        Task<BlogPostComment> DeleteAsync(string commentDesc, DateTime commentDate,string userId,Guid blogId);
+        Task<BlogPostComment> DeleteAsync(string commentDesc, DateTime commentDate,string userId,Guid blogId, bool IsAdmin);
 
     }
 }

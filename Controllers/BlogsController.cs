@@ -113,8 +113,9 @@ namespace BlogApp.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> DeleteComment(string commentDesc, DateTime commentDate,string userId,Guid blogId, string urlHandle)
-        {
-            var blogPostComment = await _blogPostCommentRepository.DeleteAsync(commentDesc,commentDate,userId,blogId);
+        {   
+            bool IsAdmin = _signInManager.IsSignedIn(User) && User.IsInRole("Admin");
+            var blogPostComment = await _blogPostCommentRepository.DeleteAsync(commentDesc,commentDate,userId,blogId,IsAdmin);
 
             if(blogPostComment == null)
                 return RedirectToAction("Error","Home");

@@ -7,9 +7,12 @@ namespace BlogApp.Repositories
     public class BlogPostCommentRepository : IBlogPostCommentRepository
     {
         private readonly BlogDbContext _blogDbContext;
-        public BlogPostCommentRepository(BlogDbContext blogDbContext)
+        private readonly AuthDbContext _dbContext;
+
+        public BlogPostCommentRepository(BlogDbContext blogDbContext,AuthDbContext dbContext)
         {
             _blogDbContext = blogDbContext;
+            _dbContext = dbContext;
         }
 
         public async Task<BlogPostComment> AddAsync(BlogPostComment blogPostComment)
@@ -19,17 +22,18 @@ namespace BlogApp.Repositories
             return blogPostComment;
         }
 
-        public async Task<BlogPostComment> DeleteAsync(string commentDesc, DateTime commentDate, string userId, Guid blogId)
+        public async Task<BlogPostComment> DeleteAsync(string commentDesc, DateTime commentDate, string userId, Guid blogId, bool IsAdmin)
         {
             // throw new NotImplementedException();
             var userIdGuid = Guid.Parse(userId);
 
             var comment = _blogDbContext.Comments.AsQueryable();
+            // var user = await _dbContext.Users.FirstOrDefaultAsync(x=>x.Id==userId);
 
             comment = comment.Where(x =>
                 x.BlogPostId == blogId &&
                 x.Description == commentDesc &&
-                x.UserId == userIdGuid);
+                (x.UserId == userIdGuid || IsAdmin));
             
             var commentAsked = await comment.ToListAsync();
 
